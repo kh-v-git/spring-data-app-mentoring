@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1500;databaseName=App_DB;encrypt=true;trustServerCertificate=true;
+    username: SA
+    password: IloveRandomPass23
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServer2012Dialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        show_sql: false
+        format_sql: true
+        hbm2ddl:
+          delimiter: ';'
+
+logging:
+  level:
+    org.springframework: ERROR
+    com.spring.taskone.demo: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+    file: "%d %p %c{1.} [%t] %m%n"
+  file:
+    name: app_logs/taskOneApp.log

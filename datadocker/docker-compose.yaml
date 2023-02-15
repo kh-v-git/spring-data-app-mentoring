@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+  db:
+    build:
+      context: database
+      dockerfile: database/Dockerfile
+    restart: always
+    ports:
+      - "1500:1433"
+    volumes:
+      - ~/apps/mssql/data:/var/lib/db/data
+    container_name: MSSql_DB_home_app
+    environment:
+      MSSQL_SA_PASSWORD:
+      MSSQL_COLLATION: SQL_Latin1_General_CP1_CS_AS_UTF8
