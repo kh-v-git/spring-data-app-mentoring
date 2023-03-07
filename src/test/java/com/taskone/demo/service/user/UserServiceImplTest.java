@@ -1,4 +1,4 @@
-package com.spring.taskone.demo.service.user;
+package com.taskone.demo.service.user;
 
 
 import com.google.common.collect.Lists;
@@ -37,7 +37,7 @@ class UserServiceImplTest {
     private UserServiceImpl testingInstance;
 
     @Test
-    void shouldGetUserById() {
+    void shouldGetUserById() throws  Exception {
         when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
         when(user.getId()).thenReturn(USER_ID);
 
@@ -48,7 +48,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void shouldGetUserByEmail() {
+    void shouldGetUserByEmail() throws  Exception {
         when(userRepository.findUserByEmail(USER_EMAIL)).thenReturn(Optional.of(user));
         when(user.getEmail()).thenReturn(USER_EMAIL);
 
@@ -59,7 +59,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void shouldGetUsersByName() {
+    void shouldGetUsersByName() throws  Exception {
         List<User> userList = Lists.newArrayList(user);
         when(user.getName()).thenReturn(USER_NAME);
         when(userRepository.findUsersByName(USER_NAME)).thenReturn(userList);
@@ -72,7 +72,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void shouldCreateUser() {
+    void shouldCreateUser() throws  Exception {
         when(userRepository.save(user)).thenReturn(user);
         when(user.getName()).thenReturn(USER_NAME);
         when(user.getEmail()).thenReturn(USER_EMAIL);
@@ -85,7 +85,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void shouldUpdateUser() {
+    void shouldUpdateUser() throws  Exception {
         when(userRepository.save(user)).thenReturn(user);
         when(user.getId()).thenReturn(USER_ID);
         when(user.getName()).thenReturn(USER_NAME);
@@ -100,7 +100,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void shouldDeleteUser() {
+    void shouldDeleteUser() throws  Exception {
         when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
 
         boolean result = testingInstance.deleteUser(USER_ID);
@@ -110,7 +110,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void shouldNotDeleteUser() {
+    void shouldNotDeleteUser() throws  Exception {
         when(userRepository.findById(USER_ID)).thenReturn(Optional.empty());
 
         boolean result = testingInstance.deleteUser(USER_ID);

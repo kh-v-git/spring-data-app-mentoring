@@ -1,12 +1,15 @@
 package com.taskone.demo.facade;
 
+import com.google.common.collect.Lists;
 import com.taskone.demo.domain.Event;
 import com.taskone.demo.domain.Ticket;
 import com.taskone.demo.domain.User;
 import com.taskone.demo.service.event.EventService;
 import com.taskone.demo.service.ticket.TicketService;
 import com.taskone.demo.service.user.UserService;
+import com.taskone.demo.service.userAccount.UserAccountService;
 import com.taskone.demo.utils.TicketCategoryEnum;
+import com.taskone.demo.utils.exception.BookingServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,6 +24,7 @@ public class BookingFacadeImpl implements BookingFacade {
     private final EventService eventService;
     private final TicketService ticketService;
     private final UserService userService;
+    private final UserAccountService userAccountService;
 
     @Override
     public Event getEventById(final long eventId) {
@@ -54,12 +58,20 @@ public class BookingFacadeImpl implements BookingFacade {
 
     @Override
     public User getUserById(final long userId) {
-        return userService.getUserById(userId);
+        try {
+            return userService.getUserById(userId);
+        } catch (BookingServiceException exc) {
+            return null;
+        }
     }
 
     @Override
     public User getUserByEmail(final String email) {
-        return userService.getUserByEmail(email);
+        try {
+            return userService.getUserByEmail(email);
+        } catch (BookingServiceException exc) {
+            return null;
+        }
     }
 
     @Override
@@ -84,21 +96,44 @@ public class BookingFacadeImpl implements BookingFacade {
 
     @Override
     public Ticket bookTicket(final long userId, final long eventId, final int place, final TicketCategoryEnum ticketCategory) {
-        return ticketService.bookTicket(userId, eventId, place, ticketCategory);
+        try {
+            return ticketService.bookTicket(userId, eventId, place, ticketCategory);
+        } catch (BookingServiceException exp) {
+            return null;
+        }
     }
 
     @Override
     public List<Ticket> getBookedTickets(final User user, final int pageSize, final int pageNum) {
-        return ticketService.getBookedTickets(user, pageSize, pageNum);
+        try {
+            return ticketService.getBookedTickets(user, pageSize, pageNum);
+        } catch (BookingServiceException exc) {
+            return Lists.newArrayList();
+        }
     }
 
     @Override
     public List<Ticket> getBookedTickets(final Event event, final int pageSize, final int pageNum) {
-        return ticketService.getBookedTickets(event, pageSize, pageNum);
+        try {
+            return ticketService.getBookedTickets(event, pageSize, pageNum);
+        } catch (BookingServiceException exc) {
+            return Lists.newArrayList();
+        }
     }
 
     @Override
     public boolean cancelTicket(final long ticketId) {
         return ticketService.cancelTicket(ticketId);
+    }
+
+    @Override
+    public boolean refillUserAccount(int userId, String amount) {
+        try {
+            userAccountService.depositMoneyToUserAccount(userId, amount);
+
+            return true;
+        } catch (BookingServiceException exc) {
+            return false;
+        }
     }
 }

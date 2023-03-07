@@ -6,7 +6,6 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,5 +39,5 @@ public class User {
     private UserAccount userAccount;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    private List<Ticket> tickets = new ArrayList<>();
+    private List<Ticket> tickets;
 }

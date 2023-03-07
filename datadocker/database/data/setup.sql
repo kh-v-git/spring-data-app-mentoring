@@ -2,7 +2,44 @@ CREATE DATABASE App_DB;
 GO
 USE App_DB;
 GO
-CREATE TABLE TestValue (id INT, name VARCHAR(50))
+create table "event"
+(
+    "id"           BIGINT identity unique,
+    "date"         date          not null,
+    "title"        varchar(255)  not null,
+    "ticket_price" decimal(9, 2) not null,
+    primary key ("id")
+);
 GO
-INSERT into TestValue VALUES (1, 'Wonder Woman')
+create table "user"
+(
+    "id"    BIGINT identity unique,
+    "uuid"  varchar(255) not null,
+    "name"  varchar(255) not null,
+    "email" varchar(255) not null,
+    primary key ("id")
+);
+GO
+create table "ticket"
+(
+    "id"              BIGINT identity unique,
+    "seat_number"     int          not null,
+    "ticket_category" varchar(255) not null,
+    "event_id"        BIGINT,
+    "user_id"         BIGINT,
+    "booking_status"  bit          NOT NULL DEFAULT (0),
+    primary key ("id"),
+    foreign key (event_id) references event (id),
+    foreign key (user_id) references [user] (id)
+);
+GO
+create table "user_account"
+(
+    "id"      BIGINT identity unique,
+    "uuid"    varchar(255)  not null,
+    "amount"  decimal(9, 2) not null,
+    "user_id" BIGINT        not null,
+    primary key ("id"),
+    foreign key ("user_id") references [user] (id)
+);
 GO

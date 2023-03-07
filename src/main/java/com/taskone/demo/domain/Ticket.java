@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
 
 @Getter
 @Setter
@@ -15,7 +14,6 @@ import java.util.Optional;
 @Entity(name = "Ticket")
 @Table(name = "ticket")
 public class Ticket {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,13 +27,18 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketCategoryEnum ticketCategory;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @NotNull(message = "Ticket must have an Event")
-    @JoinColumn(name="event_id", nullable=false)
-    private Event event;
+    @Column
+    @NotNull(message = "Ticket must have status")
+    private boolean bookingStatus;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="user_id", nullable=true)
+    @NotNull(message = "Ticket must have an Event")
+    @JoinColumn(name = "event_id", nullable = false)
+    private Event event;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
 }

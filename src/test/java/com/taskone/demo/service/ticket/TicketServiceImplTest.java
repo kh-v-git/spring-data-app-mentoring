@@ -1,4 +1,4 @@
-package com.spring.taskone.demo.service.ticket;
+package com.taskone.demo.service.ticket;
 
 import com.google.common.collect.Lists;
 import com.taskone.demo.domain.Event;
@@ -7,7 +7,6 @@ import com.taskone.demo.domain.User;
 import com.taskone.demo.repository.EventRepository;
 import com.taskone.demo.repository.TicketRepository;
 import com.taskone.demo.repository.UserRepository;
-import com.taskone.demo.service.ticket.TicketServiceImpl;
 import com.taskone.demo.utils.TicketCategoryEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +31,7 @@ class TicketServiceImplTest {
     private static final int PAGE_SIZE = 16;
     private static final int PAGE_NUMBER = 32;
     private static final int PLACE_NUMBER = 128;
+    private static final boolean BOOKING_STATUS = Boolean.TRUE;
     private static final TicketCategoryEnum TICKET_CATEGORY = TicketCategoryEnum.PREMIUM;
 
     @Mock
@@ -56,7 +56,7 @@ class TicketServiceImplTest {
     private TicketServiceImpl testingInstance;
 
     @Test
-    void shouldBookTicket() {
+    void shouldBookTicket() throws Exception {
         when(userRepository.existsById(USER_ID)).thenReturn(Boolean.TRUE);
         when(eventRepository.existsById(EVENT_ID)).thenReturn(Boolean.TRUE);
         when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
@@ -65,7 +65,9 @@ class TicketServiceImplTest {
         when(ticket.getSeatNumber()).thenReturn(PLACE_NUMBER);
         when(ticket.getTicketCategory()).thenReturn(TICKET_CATEGORY);
 
-        Ticket result = testingInstance.bookTicket(USER_ID, EVENT_ID, PAGE_NUMBER, TICKET_CATEGORY);
+        Ticket result = testingInstance.bookTicket
+
+                (USER_ID, EVENT_ID, PAGE_NUMBER, TICKET_CATEGORY);
 
         assertThat(result, is(notNullValue()));
         assertThat(result.getSeatNumber(), is(PLACE_NUMBER));
@@ -73,7 +75,7 @@ class TicketServiceImplTest {
     }
 
     @Test
-    void shouldGetBookedTicketsForUser() {
+    void shouldGetBookedTicketsForUser() throws Exception {
         List<Ticket> ticketList = Lists.newArrayList(ticket);
         when(ticket.getId()).thenReturn(USER_ID);
         when(ticketRepository.findAllByUser(user)).thenReturn(ticketList);
@@ -86,7 +88,7 @@ class TicketServiceImplTest {
     }
 
     @Test
-    void shouldGetBookedTicketsForEvent() {
+    void shouldGetBookedTicketsForEvent() throws Exception {
         List<Ticket> ticketList = Lists.newArrayList(ticket);
         when(ticket.getId()).thenReturn(EVENT_ID);
         when(ticketRepository.findAllByEvent(event)).thenReturn(ticketList);
@@ -99,7 +101,7 @@ class TicketServiceImplTest {
     }
 
     @Test
-    void shouldCancelTicket() {
+    void shouldCancelTicket() throws Exception {
         when(ticketRepository.findById(TICKET_ID)).thenReturn(Optional.of(ticket));
 
         boolean result = testingInstance.cancelTicket(TICKET_ID);
@@ -109,7 +111,7 @@ class TicketServiceImplTest {
     }
 
     @Test
-    void shouldNotCancelTicket() {
+    void shouldNotCancelTicket() throws Exception {
         when(ticketRepository.findById(TICKET_ID)).thenReturn(Optional.empty());
 
         boolean result = testingInstance.cancelTicket(TICKET_ID);

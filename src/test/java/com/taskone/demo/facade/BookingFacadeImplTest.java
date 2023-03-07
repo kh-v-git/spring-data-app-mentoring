@@ -1,4 +1,4 @@
-package com.spring.taskone.demo.facade;
+package com.taskone.demo.facade;
 
 import com.taskone.demo.domain.Event;
 import com.taskone.demo.domain.Ticket;
@@ -60,7 +60,7 @@ class BookingFacadeImplTest {
     private BookingFacadeImpl testingInstance;
 
     @Test
-    void shouldGetEventById() {
+    void shouldGetEventById() throws Exception {
         when(eventService.getEventById(EVENT_ID)).thenReturn(event);
         when(event.getId()).thenReturn(EVENT_ID);
 
@@ -71,7 +71,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldGetEventsByTitle() {
+    void shouldGetEventsByTitle() throws Exception {
         List<Event> eventList = Lists.newArrayList(event);
         when(event.getTitle()).thenReturn(EVENT_TITLE);
         when(eventService.getEventsByTitle(EVENT_TITLE, PAGE_SIZE, PAGE_NUMBER)).thenReturn(eventList);
@@ -85,7 +85,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldGetEventsForDay() {
+    void shouldGetEventsForDay() throws Exception {
         List<Event> eventList = Lists.newArrayList(event);
         when(event.getDate()).thenReturn(EVENT_DATE);
         when(eventService.getEventsForDay(EVENT_DATE, PAGE_SIZE, PAGE_NUMBER)).thenReturn(eventList);
@@ -98,7 +98,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldCreateEvent() {
+    void shouldCreateEvent() throws Exception {
         when(eventService.createEvent(event)).thenReturn(event);
         when(event.getId()).thenReturn(EVENT_ID);
         when(event.getTitle()).thenReturn(EVENT_TITLE);
@@ -113,7 +113,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldUpdateEvent() {
+    void shouldUpdateEvent() throws Exception {
         when(eventService.updateEvent(event)).thenReturn(event);
         when(event.getId()).thenReturn(EVENT_ID);
         when(event.getDate()).thenReturn(EVENT_DATE);
@@ -128,7 +128,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldDeleteEvent() {
+    void shouldDeleteEvent() throws Exception {
         when(eventService.deleteEvent(EVENT_ID)).thenReturn(Boolean.TRUE);
 
         boolean result = testingInstance.deleteEvent(EVENT_ID);
@@ -138,7 +138,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldGetUserById() {
+    void shouldGetUserById() throws Exception {
         when(userService.getUserById(USER_ID)).thenReturn(user);
         when(user.getId()).thenReturn(USER_ID);
 
@@ -149,7 +149,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldGetUserByEmail() {
+    void shouldGetUserByEmail() throws Exception {
         when(userService.getUserByEmail(USER_EMAIL)).thenReturn(user);
         when(user.getEmail()).thenReturn(USER_EMAIL);
 
@@ -160,7 +160,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldGetUsersByName() {
+    void shouldGetUsersByName() throws Exception {
         List<User> userList = Lists.newArrayList(user);
         when(user.getName()).thenReturn(USER_NAME);
         when(userService.getUsersByName(USER_NAME, PAGE_SIZE, PAGE_NUMBER)).thenReturn(userList);
@@ -173,7 +173,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldCreateUser() {
+    void shouldCreateUser() throws Exception {
         when(userService.createUser(user)).thenReturn(user);
         when(user.getName()).thenReturn(USER_NAME);
         when(user.getEmail()).thenReturn(USER_EMAIL);
@@ -186,7 +186,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldUpdateUser() {
+    void shouldUpdateUser() throws Exception {
         when(userService.updateUser(user)).thenReturn(user);
         when(user.getId()).thenReturn(USER_ID);
         when(user.getName()).thenReturn(USER_NAME);
@@ -201,7 +201,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldDeleteUser() {
+    void shouldDeleteUser() throws Exception {
         when(userService.deleteUser(USER_ID)).thenReturn(Boolean.TRUE);
 
         boolean result = testingInstance.deleteUser(USER_ID);
@@ -211,7 +211,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldBookTicket() {
+    void shouldBookTicket() throws Exception {
         when(ticketService.bookTicket(anyLong(), anyLong(), anyInt(), any())).thenReturn(ticket);
         when(ticket.getSeatNumber()).thenReturn(PLACE_NUMBER);
         when(ticket.getTicketCategory()).thenReturn(TICKET_CATEGORY);
@@ -225,7 +225,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldGetBookedTicketsByUser() {
+    void shouldGetBookedTicketsByUser() throws Exception {
         List<Ticket> ticketList = Lists.newArrayList(ticket);
         when(ticket.getId()).thenReturn(USER_ID);
         when(ticketService.getBookedTickets(user, PAGE_SIZE, PAGE_NUMBER)).thenReturn(ticketList);
@@ -238,7 +238,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldTestGetBookedTickets() {
+    void shouldTestGetBookedTickets() throws Exception {
         List<Ticket> ticketList = Lists.newArrayList(ticket);
         when(ticket.getId()).thenReturn(EVENT_ID);
         when(ticketService.getBookedTickets(event, PAGE_SIZE, PAGE_NUMBER)).thenReturn(ticketList);
@@ -251,7 +251,7 @@ class BookingFacadeImplTest {
     }
 
     @Test
-    void shouldCancelTicket() {
+    void shouldCancelTicket() throws Exception {
         when(ticketService.cancelTicket(TICKET_ID)).thenReturn(Boolean.TRUE);
 
         boolean result = testingInstance.cancelTicket(TICKET_ID);

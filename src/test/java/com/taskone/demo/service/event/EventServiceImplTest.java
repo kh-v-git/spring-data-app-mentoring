@@ -1,4 +1,4 @@
-package com.spring.taskone.demo.service.event;
+package com.taskone.demo.service.event;
 
 import com.google.common.collect.Lists;
 import com.taskone.demo.domain.Event;
@@ -123,3 +123,5 @@ class EventServiceImplTest {
         assertThat(result, is(Boolean.FALSE));
     }
 }
+
+

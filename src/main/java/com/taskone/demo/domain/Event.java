@@ -4,8 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -29,6 +29,10 @@ public class Event {
     @Column(name = "title")
     private String title;
 
+    @NotNull(message = "Event must have a Price")
+    @Column(name = "ticket_price")
+    private BigDecimal ticketPrice;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "event")
-    private List<Ticket> ticket = new ArrayList<>();
+    private List<Ticket> ticket;
 }

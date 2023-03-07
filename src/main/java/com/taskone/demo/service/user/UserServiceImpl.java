@@ -2,31 +2,28 @@ package com.taskone.demo.service.user;
 
 import com.taskone.demo.domain.User;
 import com.taskone.demo.repository.UserRepository;
+import com.taskone.demo.utils.exception.BookingServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.javamoney.moneta.Money;
 import org.springframework.stereotype.Service;
 
-import javax.money.Monetary;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
 
     @Override
-    public User getUserById(final long userId) {
-        return userRepository.findById(userId).orElseThrow(()-> new NoSuchElementException("User not found with Id = " + userId));
+    public User getUserById(final long userId) throws BookingServiceException {
+        return userRepository.findById(userId).orElseThrow(() -> new BookingServiceException(String.format("User not found with Id: %s.", userId)));
     }
 
     @Override
-    public User getUserByEmail(final String email) {
-        return userRepository.findUserByEmail(email).orElseThrow(()-> new NoSuchElementException("User not found with Email = " + email));
+    public User getUserByEmail(final String email) throws BookingServiceException {
+        return userRepository.findUserByEmail(email).orElseThrow(() -> new BookingServiceException(String.format("User not found with Email: %s.", email)));
     }
 
     @Override

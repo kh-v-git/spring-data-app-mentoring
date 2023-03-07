@@ -15,7 +15,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class EventServiceImpl implements EventService {
-
     private final EventRepository eventRepository;
 
     @Override

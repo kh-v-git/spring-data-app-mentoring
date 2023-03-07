@@ -4,6 +4,7 @@ import com.taskone.demo.domain.Event;
 import com.taskone.demo.domain.Ticket;
 import com.taskone.demo.domain.User;
 import com.taskone.demo.utils.TicketCategoryEnum;
+import com.taskone.demo.utils.exception.BookingServiceException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -155,4 +156,12 @@ public interface BookingFacade {
      * @return Flag whether anything has been canceled.
      */
     boolean cancelTicket(long ticketId);
+
+    /**
+     * Refill UserAccount with amount by userId
+     *
+     * @param userId User id to refill
+     * @param amount amount of money to refill
+     */
+    boolean refillUserAccount(int userId, String amount) throws BookingServiceException;
 }

@@ -1,8 +1,8 @@
 insert into event
-    (date, title)
-values ('2023-06-11', 'The Matrix'),
-       ('2023-07-14', 'Pirates of the Barbarian'),
-       ('2023-08-14', 'Transformers');
+    (date, title, ticket_price)
+values ('2023-06-11', 'The Matrix', 5.25),
+       ('2023-07-14', 'Pirates of the Barbarian', 9.99),
+       ('2023-08-14', 'Transformers', 7.25);
 
 DECLARE @ID_1 UNIQUEIDENTIFIER
 SET @ID_1 = NEWID()
@@ -74,66 +74,22 @@ SET @ID_event_3 = (select id
                    where title = 'Transformers')
 
 insert into ticket
-    (seat_number, ticket_category, event_id, user_id)
-values (1, 'LUX', @ID_event_1, @ID_user_1),
-       (2, 'PREMIUM', @ID_event_1, @ID_user_2),
-       (3, 'PREMIUM', @ID_event_1, @ID_user_3),
-       (4, 'STANDARD', @ID_event_1, @ID_user_1),
-       (5, 'STANDARD', @ID_event_1, @ID_user_2),
-       (6, 'STANDARD', @ID_event_1, @ID_user_3),
-       (1, 'LUX', @ID_event_2, @ID_user_2),
-       (2, 'PREMIUM', @ID_event_2, @ID_user_1),
-       (3, 'PREMIUM', @ID_event_2, @ID_user_3),
-       (4, 'STANDARD', @ID_event_2, @ID_user_2),
-       (5, 'STANDARD', @ID_event_2, @ID_user_1),
-       (6, 'STANDARD', @ID_event_2, @ID_user_3),
-       (1, 'LUX', @ID_event_2, @ID_user_3),
-       (2, 'PREMIUM', @ID_event_2, @ID_user_1),
-       (3, 'PREMIUM', @ID_event_2, @ID_user_2),
-       (4, 'STANDARD', @ID_event_2, @ID_user_3),
-       (5, 'STANDARD', @ID_event_2, @ID_user_1),
-       (6, 'STANDARD', @ID_event_2, @ID_user_2)
-
-
-create table "event"
-(
-    "id"    BIGINT identity unique,
-    "date"  date         not null,
-    "title" varchar(255) not null,
-    primary key ("id")
-);
-
-create table "user"
-(
-    "id"    BIGINT identity unique,
-    "uuid"  varchar(255) not null,
-    "name"  varchar(255) not null,
-    "email" varchar(255) not null,
-    primary key ("id")
-);
-
-create table "ticket"
-(
-    "id"              BIGINT identity unique,
-    "seat_number"     int          not null,
-    "ticket_category" varchar(255) not null,
-    "event_id"        BIGINT,
-    "user_id"         BIGINT,
-    primary key ("id"),
-    foreign key (event_id) references event (id),
-    foreign key (user_id) references [user] (id)
-);
-
-create table "user_account"
-(
-    "id"      BIGINT identity unique,
-    "uuid"    varchar(255) not null,
-    "amount"  decimal      not null,
-    "user_id" BIGINT       not null,
-    primary key ("id"),
-    foreign key ("user_id") references [user] (id)
-);
-
-
-select *
-from INFORMATION_SCHEMA.TABLES;
+    (seat_number, ticket_category, booking_status, event_id, user_id)
+values (1, 'LUX', 0,  @ID_event_1, @ID_user_1),
+       (2, 'PREMIUM', 0, @ID_event_1, @ID_user_2),
+       (3, 'PREMIUM', 0, @ID_event_1, @ID_user_3),
+       (4, 'STANDARD', 0, @ID_event_1, @ID_user_1),
+       (5, 'STANDARD', 0, @ID_event_1, @ID_user_2),
+       (6, 'STANDARD', 0, @ID_event_1, @ID_user_3),
+       (1, 'LUX', 0, @ID_event_2, @ID_user_2),
+       (2, 'PREMIUM', 0, @ID_event_2, @ID_user_1),
+       (3, 'PREMIUM', 0, @ID_event_2, @ID_user_3),
+       (4, 'STANDARD', 0, @ID_event_2, @ID_user_2),
+       (5, 'STANDARD', 0, @ID_event_2, @ID_user_1),
+       (6, 'STANDARD', 0, @ID_event_2, @ID_user_3),
+       (1, 'LUX', 0, @ID_event_2, @ID_user_3),
+       (2, 'PREMIUM', 0, @ID_event_2, @ID_user_1),
+       (3, 'PREMIUM', 0, @ID_event_2, @ID_user_2),
+       (4, 'STANDARD', 0, @ID_event_2, @ID_user_3),
+       (5, 'STANDARD', 0, @ID_event_2, @ID_user_1),
+       (6, 'STANDARD', 0, @ID_event_2, @ID_user_2)
