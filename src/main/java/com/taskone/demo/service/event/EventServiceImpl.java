@@ -4,7 +4,11 @@ import com.taskone.demo.domain.Event;
 import com.taskone.demo.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,25 +18,32 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
 
     @Override
+    @Transactional
     public Event getEventById(final long eventId) {
         return eventRepository.findById(eventId).orElseThrow(() -> new NoSuchElementException("Event not found with Id = " + eventId));
     }
 
     @Override
     public List<Event> getEventsByTitle(final String title, final int pageSize, final int pageNum) {
-        return eventRepository.findAllByTitle(title);
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+
+        return eventRepository.findAllByTitle(title, pageable);
     }
 
     @Override
     public List<Event> getEventsForDay(final LocalDate date, final int pageSize, final int pageNum) {
-        return eventRepository.findAllByDate(date);
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+
+        return eventRepository.findAllByDate(date, pageable);
     }
 
     @Override
+    @Transactional
     public Event createEvent(final Event event) {
         Event savedEvent = eventRepository.save(event);
 
@@ -42,6 +53,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public Event updateEvent(final Event event) {
         Event savedEvent = eventRepository.save(event);
 
@@ -51,6 +63,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public boolean deleteEvent(final long eventId) {
         Optional<Event> maybeEvent = eventRepository.findById(eventId);
         if (maybeEvent.isEmpty()) {
@@ -65,6 +78,3 @@ public class EventServiceImpl implements EventService {
         return true;
     }
 }
-
-
-

@@ -5,7 +5,11 @@ import com.taskone.demo.repository.UserRepository;
 import com.taskone.demo.utils.exception.BookingServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +17,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
@@ -28,10 +33,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsersByName(final String name, final int pageSize, final int pageNum) {
-        return userRepository.findUsersByName(name);
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+
+        return userRepository.findUsersByName(name, pageable);
     }
 
     @Override
+    @Transactional
     public User createUser(final User user) {
         User savedUser = userRepository.save(user);
 
@@ -41,6 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User updateUser(final User user) {
         User savedUser = userRepository.save(user);
 
@@ -49,6 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean deleteUser(final long userId) {
         Optional<User> maybeUser = userRepository.findById(userId);
         if (maybeUser.isEmpty()) {

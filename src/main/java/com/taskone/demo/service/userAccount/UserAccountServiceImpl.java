@@ -8,6 +8,8 @@ import com.taskone.demo.utils.exception.BookingServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -17,11 +19,13 @@ import java.text.ParseException;
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class UserAccountServiceImpl implements UserAccountService {
     private final UserRepository userRepository;
     private final UserAccountRepository userAccountRepository;
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void depositMoneyToUserAccount(int userId, String amount) throws BookingServiceException {
         BigDecimal depositAmount = parseAccountAmount(amount);
 
@@ -44,8 +48,8 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void debitMoneyFromUserAccount(int userId, String amount) throws BookingServiceException {
-        BigDecimal parsedAmount = parseAccountAmount(amount);
 
         if (!userRepository.existsById((long) userId)) {
             throw new BookingServiceException(String.format("User not found with id: %s.", userId));
@@ -53,7 +57,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
         if (userAccountRepository.existsUserAccountByUserId((long) userId)) {
             UserAccount userAccount = userAccountRepository.findUserAccountByUserId((long) userId).orElseThrow();
-            userAccount.setAmount(userAccount.getAmount().add(parsedAmount));
+            userAccount.setAmount(userAccount.getAmount().add(parseAccountAmount(amount)));
 
             userAccountRepository.save(userAccount);
         } else {

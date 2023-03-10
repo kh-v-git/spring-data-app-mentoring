@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
@@ -31,6 +33,7 @@ public class TicketServiceImpl implements TicketService {
     private final UserAccountRepository userAccountRepository;
 
     @Override
+    @Transactional
     public Ticket bookTicket(long userId, long eventId, int place, TicketCategoryEnum ticketCategory) throws BookingServiceException {
         User user = userRepository.findById(userId).orElseThrow(() -> new BookingServiceException(String.format("User not found with id: %s.", userId)));
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new BookingServiceException(String.format("Event not found with id: %s.", eventId)));
@@ -73,6 +76,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional
     public boolean cancelTicket(final long ticketId) {
         Optional<Ticket> maybeTicket = ticketRepository.findById(ticketId);
         if (maybeTicket.isEmpty()) {
